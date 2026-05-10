@@ -1,201 +1,405 @@
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
+-- LocalScript в StarterPlayerScripts
 
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
 
-   1. Definitions.
+local player = Players.LocalPlayer
+local mouse = player:GetMouse()
 
-      "License" shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
+local gui = Instance.new("ScreenGui")
+gui.Name = "HawixsScript"
+gui.ResetOnSpawn = false
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+gui.IgnoreGuiInset = true
+gui.Parent = player.PlayerGui
 
-      "Licensor" shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
+local function co(p, r) Instance.new("UICorner", p).CornerRadius = UDim.new(0, r or 10) end
+local function st(p, c, t) local s = Instance.new("UIStroke", p); s.Color = c or Color3.fromRGB(25,25,40); s.Thickness = t or 1 end
+local function pad(p, l) local u = Instance.new("UIPadding", p); u.PaddingLeft = UDim.new(0, l or 12) end
 
-      "Legal Entity" shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      "control" means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
+-- Окно
+local win = Instance.new("Frame")
+win.Size = UDim2.new(0, 500, 0, 386)
+win.Position = UDim2.new(0.5, -250, 0.5, -193)
+win.BackgroundColor3 = Color3.fromRGB(21, 21, 31)
+win.BorderSizePixel = 0
+win.Visible = false
+win.ClipsDescendants = true
+win.Parent = gui
+co(win, 14)
+st(win, Color3.fromRGB(35, 35, 55))
 
-      "You" (or "Your") shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
+-- Titlebar
+local tb = Instance.new("Frame")
+tb.Size = UDim2.new(1, 0, 0, 46)
+tb.BackgroundColor3 = Color3.fromRGB(13, 13, 20)
+tb.BorderSizePixel = 0
+tb.ZIndex = 20
+tb.Parent = win
+co(tb, 14)
+local tbf = Instance.new("Frame")
+tbf.Size = UDim2.new(1, 0, 0.5, 0)
+tbf.Position = UDim2.new(0, 0, 0.5, 0)
+tbf.BackgroundColor3 = Color3.fromRGB(13, 13, 20)
+tbf.BorderSizePixel = 0
+tbf.Parent = tb
 
-      "Source" form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
+local function dot(col, x)
+    local d = Instance.new("Frame")
+    d.Size = UDim2.new(0, 11, 0, 11)
+    d.Position = UDim2.new(0, x, 0.5, -5.5)
+    d.BackgroundColor3 = col
+    d.BorderSizePixel = 0; d.ZIndex = 22
+    d.Parent = tb; co(d, 6)
+end
+dot(Color3.fromRGB(255,95,87),  14)
+dot(Color3.fromRGB(254,188,46), 31)
+dot(Color3.fromRGB(40,200,64),  48)
 
-      "Object" form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
+local function tbLabel(txt, col, x, w, bold)
+    local l = Instance.new("TextLabel")
+    l.Size = UDim2.new(0, w, 1, 0)
+    l.Position = UDim2.new(0, x, 0, 0)
+    l.BackgroundTransparency = 1
+    l.Text = txt
+    l.TextColor3 = col
+    l.TextSize = 13
+    l.Font = bold and Enum.Font.GothamBold or Enum.Font.Gotham
+    l.TextXAlignment = Enum.TextXAlignment.Left
+    l.ZIndex = 22
+    l.Parent = tb
+    return l
+end
+tbLabel("Hawixs", Color3.fromRGB(230,230,245), 70, 65, true)
+tbLabel("Script", Color3.fromRGB(139,92,246),  132, 55, true)
 
-      "Work" shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
+local ver = Instance.new("TextLabel")
+ver.Size = UDim2.new(0, 36, 0, 18); ver.Position = UDim2.new(0, 190, 0.5, -9)
+ver.BackgroundColor3 = Color3.fromRGB(18,10,38); ver.TextColor3 = Color3.fromRGB(139,92,246)
+ver.Text = "v2.0"; ver.TextSize = 10; ver.Font = Enum.Font.GothamBold
+ver.BorderSizePixel = 0; ver.ZIndex = 22; ver.Parent = tb
+co(ver, 5); st(ver, Color3.fromRGB(55,25,110))
 
-      "Derivative Works" shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
+local keyL = Instance.new("TextLabel")
+keyL.Size = UDim2.new(0, 56, 0, 20); keyL.Position = UDim2.new(1, -68, 0.5, -10)
+keyL.BackgroundColor3 = Color3.fromRGB(9,9,16); keyL.TextColor3 = Color3.fromRGB(50,50,72)
+keyL.Text = "RShift"; keyL.TextSize = 10; keyL.Font = Enum.Font.Gotham
+keyL.BorderSizePixel = 0; keyL.ZIndex = 22; keyL.Parent = tb
+co(keyL, 5); st(keyL, Color3.fromRGB(25,25,42))
 
-      "Contribution" shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, "submitted"
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as "Not a Contribution."
+-- Sidebar
+local side = Instance.new("Frame")
+side.Size = UDim2.new(0, 130, 1, -46)
+side.Position = UDim2.new(0, 0, 0, 46)
+side.BackgroundColor3 = Color3.fromRGB(11, 11, 18)
+side.BorderSizePixel = 0
+side.Parent = win
+local sf = Instance.new("Frame")
+sf.Size = UDim2.new(0, 14, 1, 0); sf.Position = UDim2.new(1, -14, 0, 0)
+sf.BackgroundColor3 = Color3.fromRGB(11,11,18); sf.BorderSizePixel = 0; sf.Parent = side
+st(side, Color3.fromRGB(22,22,36))
 
-      "Contributor" shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
+-- ScrollingFrame для контента
+local scroll = Instance.new("ScrollingFrame")
+scroll.Size = UDim2.new(1, -130, 1, -46)
+scroll.Position = UDim2.new(0, 130, 0, 46)
+scroll.BackgroundTransparency = 1
+scroll.BorderSizePixel = 0
+scroll.ScrollBarThickness = 3
+scroll.ScrollBarImageColor3 = Color3.fromRGB(60,60,90)
+scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+scroll.ScrollingDirection = Enum.ScrollingDirection.Y
+scroll.ElasticBehavior = Enum.ElasticBehavior.Always
+scroll.Parent = win
 
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
+-- Контент внутри scroll
+local contentArea = Instance.new("Frame")
+contentArea.Size = UDim2.new(1, 0, 0, 0)
+contentArea.AutomaticSize = Enum.AutomaticSize.Y
+contentArea.BackgroundTransparency = 1
+contentArea.Parent = scroll
 
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
+local UIList = Instance.new("UIListLayout", contentArea)
+UIList.SortOrder = Enum.SortOrder.LayoutOrder
+UIList.Padding = UDim.new(0, 0)
 
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
+-- State
+local S = {speed=16,jump=50,fly=false,noclip=false,infJump=false,god=false,invis=false}
+local acC = Color3.fromRGB(109,40,217)
+local acL = Color3.fromRGB(167,139,250)
+local panels = {}
+local tabBtns = {}
 
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
+local function makePanel(name)
+    local p = Instance.new("Frame")
+    p.Name = name
+    p.Size = UDim2.new(1, 0, 0, 0)
+    p.AutomaticSize = Enum.AutomaticSize.Y
+    p.BackgroundTransparency = 1
+    p.Visible = false
+    p.LayoutOrder = 1
+    local list = Instance.new("UIListLayout", p)
+    list.SortOrder = Enum.SortOrder.LayoutOrder
+    list.Padding = UDim.new(0, 7)
+    local pd = Instance.new("UIPadding", p)
+    pd.PaddingLeft = UDim.new(0,14); pd.PaddingRight = UDim.new(0,14)
+    pd.PaddingTop = UDim.new(0,14);  pd.PaddingBottom = UDim.new(0,14)
+    p.Parent = contentArea
+    return p
+end
 
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
+local function switchTab(name)
+    scroll.CanvasPosition = Vector2.zero
+    for n, p in pairs(panels)  do p.Visible = (n == name) end
+    for n, d in pairs(tabBtns) do
+        local on = (n == name)
+        d.btn.TextColor3 = on and acL or Color3.fromRGB(58,58,82)
+        d.btn.BackgroundTransparency = on and 0 or 1
+        d.btn.BackgroundColor3 = Color3.fromRGB(22,22,38)
+        d.bar.Visible = on
+    end
+end
 
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
+local function makeTabBtn(label, yPos)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, -4, 0, 36)
+    btn.Position = UDim2.new(0, 0, 0, yPos)
+    btn.BackgroundTransparency = 1
+    btn.Text = "       "..label
+    btn.TextColor3 = Color3.fromRGB(58,58,82)
+    btn.TextSize = 12; btn.Font = Enum.Font.Gotham
+    btn.TextXAlignment = Enum.TextXAlignment.Left
+    btn.BorderSizePixel = 0; btn.Parent = side
+    co(btn, 7)
+    local bar = Instance.new("Frame")
+    bar.Size = UDim2.new(0, 3, 0.55, 0)
+    bar.Position = UDim2.new(0, 0, 0.225, 0)
+    bar.BackgroundColor3 = acC; bar.BorderSizePixel = 0
+    bar.Visible = false; bar.Parent = btn; co(bar, 2)
+    return btn, bar
+end
 
-      (d) If the Work includes a "NOTICE" text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
+-- Card
+local function card(parent, h)
+    local f = Instance.new("Frame")
+    f.Size = UDim2.new(1, 0, 0, h or 38)
+    f.BackgroundColor3 = Color3.fromRGB(13,13,20)
+    f.BorderSizePixel = 0; f.Parent = parent
+    co(f, 9); st(f, Color3.fromRGB(22,22,36))
+    return f
+end
 
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
+local function secLabel(parent, txt)
+    local l = Instance.new("TextLabel")
+    l.Size = UDim2.new(1, 0, 0, 22)
+    l.BackgroundTransparency = 1
+    l.Text = txt; l.TextColor3 = Color3.fromRGB(45,45,68)
+    l.TextSize = 10; l.Font = Enum.Font.GothamBold
+    l.TextXAlignment = Enum.TextXAlignment.Left
+    l.Parent = parent
+    return l
+end
 
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
+local function makeToggle(parent, label, default, onChange)
+    local c = card(parent, 38)
+    local lbl = Instance.new("TextLabel")
+    lbl.Size = UDim2.new(1, -54, 1, 0); lbl.Position = UDim2.new(0, 12, 0, 0)
+    lbl.BackgroundTransparency = 1; lbl.Text = label
+    lbl.TextColor3 = Color3.fromRGB(185,185,205); lbl.TextSize = 12
+    lbl.Font = Enum.Font.Gotham; lbl.TextXAlignment = Enum.TextXAlignment.Left
+    lbl.Parent = c
 
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
+    local isOn = default
+    local tog = Instance.new("TextButton")
+    tog.Size = UDim2.new(0, 38, 0, 20); tog.Position = UDim2.new(1, -50, 0.5, -10)
+    tog.BackgroundColor3 = isOn and acC or Color3.fromRGB(28,28,44)
+    tog.Text = ""; tog.BorderSizePixel = 0; tog.Parent = c; co(tog, 10)
+    st(tog, isOn and Color3.fromRGB(90,30,180) or Color3.fromRGB(35,35,58))
 
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an "AS IS" BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
+    local knob = Instance.new("Frame")
+    knob.Size = UDim2.new(0, 14, 0, 14)
+    knob.Position = isOn and UDim2.new(0,22,0.5,-7) or UDim2.new(0,3,0.5,-7)
+    knob.BackgroundColor3 = Color3.new(1,1,1); knob.BorderSizePixel = 0
+    knob.Parent = tog; co(knob, 7)
 
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
+    tog.MouseButton1Click:Connect(function()
+        isOn = not isOn
+        TweenService:Create(tog,  TweenInfo.new(0.14), {BackgroundColor3 = isOn and acC or Color3.fromRGB(28,28,44)}):Play()
+        TweenService:Create(knob, TweenInfo.new(0.14), {Position = isOn and UDim2.new(0,22,0.5,-7) or UDim2.new(0,3,0.5,-7)}):Play()
+        if onChange then onChange(isOn) end
+    end)
+    return function() return isOn end
+end
 
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
+local function makeSlider(parent, label, mn, mx, def, onChange)
+    local c = card(parent, 56)
+    local lbl = Instance.new("TextLabel")
+    lbl.Size = UDim2.new(1, -60, 0, 22); lbl.Position = UDim2.new(0, 12, 0, 6)
+    lbl.BackgroundTransparency = 1; lbl.Text = label
+    lbl.TextColor3 = Color3.fromRGB(185,185,205); lbl.TextSize = 12
+    lbl.Font = Enum.Font.Gotham; lbl.TextXAlignment = Enum.TextXAlignment.Left; lbl.Parent = c
 
-   END OF TERMS AND CONDITIONS
+    local vBox = Instance.new("TextLabel")
+    vBox.Size = UDim2.new(0, 40, 0, 18); vBox.Position = UDim2.new(1, -52, 0, 8)
+    vBox.BackgroundColor3 = Color3.fromRGB(18,9,36); vBox.TextColor3 = acL
+    vBox.Text = tostring(def); vBox.TextSize = 11; vBox.Font = Enum.Font.GothamBold
+    vBox.BorderSizePixel = 0; vBox.Parent = c; co(vBox, 5)
+    st(vBox, Color3.fromRGB(45,18,90))
 
-   APPENDIX: How to apply the Apache License to your work.
+    local track = Instance.new("Frame")
+    track.Size = UDim2.new(1, -24, 0, 4); track.Position = UDim2.new(0, 12, 0, 40)
+    track.BackgroundColor3 = Color3.fromRGB(24,24,40); track.BorderSizePixel = 0
+    track.Parent = c; co(track, 2)
 
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets "[]"
-      replaced with your own identifying information. (Don't include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same "printed page" as the copyright notice for easier
-      identification within third-party archives.
+    local fill = Instance.new("Frame")
+    fill.Size = UDim2.new((def-mn)/(mx-mn), 0, 1, 0)
+    fill.BackgroundColor3 = acC; fill.BorderSizePixel = 0; fill.Parent = track; co(fill, 2)
 
-   Copyright [yyyy] [name of copyright owner]
+    local thumb = Instance.new("Frame")
+    thumb.Size = UDim2.new(0, 15, 0, 15); thumb.AnchorPoint = Vector2.new(0.5, 0.5)
+    thumb.Position = UDim2.new((def-mn)/(mx-mn), 0, 0.5, 0)
+    thumb.BackgroundColor3 = Color3.fromRGB(196,181,253); thumb.BorderSizePixel = 0
+    thumb.ZIndex = 5; thumb.Parent = track; co(thumb, 8)
+    st(thumb, Color3.fromRGB(109,40,217), 2)
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+    local val = def; local drag = false
+    track.InputBegan:Connect(function(i) if i.UserInputType == Enum.UserInputType.MouseButton1 then drag = true end end)
+    UserInputService.InputEnded:Connect(function(i) if i.UserInputType == Enum.UserInputType.MouseButton1 then drag = false end end)
+    RunService.Heartbeat:Connect(function()
+        if not drag then return end
+        local pct = math.clamp((mouse.X - track.AbsolutePosition.X) / track.AbsoluteSize.X, 0, 1)
+        val = math.round(mn + pct*(mx-mn))
+        fill.Size = UDim2.new(pct, 0, 1, 0); thumb.Position = UDim2.new(pct, 0, 0.5, 0)
+        vBox.Text = tostring(val)
+        if onChange then onChange(val) end
+    end)
+    return function() return val end
+end
 
-       http://www.apache.org/licenses/LICENSE-2.0
+local function ndiv(yPos)
+    local d = Instance.new("Frame"); d.Size = UDim2.new(1, -18, 0, 1)
+    d.Position = UDim2.new(0, 9, 0, yPos); d.BackgroundColor3 = Color3.fromRGB(18,18,30)
+    d.BorderSizePixel = 0; d.Parent = side
+end
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+-- ======= Movement =======
+local mvBtn, mvBar = makeTabBtn("Movement", 8)
+local mvPanel = makePanel("Movement")
+panels["Movement"] = mvPanel; tabBtns["Movement"] = {btn=mvBtn, bar=mvBar}
+
+secLabel(mvPanel, "ДВИЖЕНИЕ")
+makeSlider(mvPanel, "Скорость",  16, 150, 16,  function(v) S.speed = v end)
+makeSlider(mvPanel, "Прыжок",   50, 350, 50,  function(v) S.jump  = v end)
+makeToggle(mvPanel, "Полёт",               false, function(v) S.fly     = v end)
+makeToggle(mvPanel, "Ускорение",           true,  function(v) end)
+makeToggle(mvPanel, "Бесконечный прыжок",  false, function(v) S.infJump = v end)
+makeToggle(mvPanel, "Нет коллизий",        false, function(v) S.noclip  = v end)
+makeToggle(mvPanel, "Телепорт к точке",    false, function(v) end)
+mvBtn.MouseButton1Click:Connect(function() switchTab("Movement") end)
+
+-- ======= Player =======
+local plBtn, plBar = makeTabBtn("Player", 52)
+local plPanel = makePanel("Player")
+panels["Player"] = plPanel; tabBtns["Player"] = {btn=plBtn, bar=plBar}
+ndiv(95)
+
+secLabel(plPanel, "ИГРОК")
+makeToggle(plPanel, "Бог мод",    false, function(v)
+    S.god = v; local c = player.Character
+    local h = c and c:FindFirstChildOfClass("Humanoid")
+    if h then h.MaxHealth = v and math.huge or 100; h.Health = h.MaxHealth end
+end)
+makeToggle(plPanel, "Невидимость", false, function(v)
+    S.invis = v; local c = player.Character
+    if c then for _, p in ipairs(c:GetDescendants()) do
+        if p:IsA("BasePart") and p.Name ~= "HumanoidRootPart" then
+            p.LocalTransparencyModifier = v and 1 or 0 end end end
+end)
+makeSlider(plPanel, "Здоровье", 0, 100, 100, function(v)
+    local c = player.Character; local h = c and c:FindFirstChildOfClass("Humanoid")
+    if h then h.Health = v end
+end)
+makeToggle(plPanel, "Урон x2",  false, function(v) end)
+plBtn.MouseButton1Click:Connect(function() switchTab("Player") end)
+
+-- ======= Settings =======
+local stBtn, stBar = makeTabBtn("Settings", 104)
+local stPanel = makePanel("Settings")
+panels["Settings"] = stPanel; tabBtns["Settings"] = {btn=stBtn, bar=stBar}
+
+secLabel(stPanel, "НАСТРОЙКИ")
+makeToggle(stPanel, "Уведомления",       true,  function(v) end)
+makeToggle(stPanel, "Показывать статус", true,  function(v) end)
+makeSlider(stPanel, "Прозрачность окна", 0, 100, 100, function(v)
+    win.BackgroundTransparency = v/100
+end)
+stBtn.MouseButton1Click:Connect(function() switchTab("Settings") end)
+
+switchTab("Movement")
+
+-- ======= Логика =======
+local flyBV = nil
+RunService.Heartbeat:Connect(function()
+    local char = player.Character; if not char then return end
+    local hum  = char:FindFirstChildOfClass("Humanoid")
+    local root = char:FindFirstChild("HumanoidRootPart")
+    if hum then hum.WalkSpeed = S.speed; hum.JumpPower = S.jump end
+    if S.noclip then for _, p in ipairs(char:GetDescendants()) do
+        if p:IsA("BasePart") then p.CanCollide = false end end end
+    if S.fly and root then
+        if not flyBV then
+            flyBV = Instance.new("BodyVelocity")
+            flyBV.MaxForce = Vector3.new(1e5,1e5,1e5); flyBV.Velocity = Vector3.zero; flyBV.Parent = root
+        end
+        local cam = workspace.CurrentCamera; local dir = Vector3.zero
+        if UserInputService:IsKeyDown(Enum.KeyCode.W) then dir += cam.CFrame.LookVector  end
+        if UserInputService:IsKeyDown(Enum.KeyCode.S) then dir -= cam.CFrame.LookVector  end
+        if UserInputService:IsKeyDown(Enum.KeyCode.A) then dir -= cam.CFrame.RightVector end
+        if UserInputService:IsKeyDown(Enum.KeyCode.D) then dir += cam.CFrame.RightVector end
+        if UserInputService:IsKeyDown(Enum.KeyCode.Space)       then dir += Vector3.new(0,1,0) end
+        if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then dir -= Vector3.new(0,1,0) end
+        flyBV.Velocity = dir.Magnitude > 0 and dir.Unit*50 or Vector3.zero
+    elseif flyBV then flyBV:Destroy(); flyBV = nil end
+end)
+
+UserInputService.JumpRequest:Connect(function()
+    if not S.infJump then return end
+    local c = player.Character; local h = c and c:FindFirstChildOfClass("Humanoid")
+    if h then h:ChangeState(Enum.HumanoidStateType.Jumping) end
+end)
+
+-- ======= ПЕРЕТАСКИВАНИЕ через mouse.Move =======
+local dragging = false
+local dragOffX, dragOffY = 0, 0
+
+tb.InputBegan:Connect(function(inp)
+    if inp.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
+    dragging = true
+    dragOffX = mouse.X - win.AbsolutePosition.X
+    dragOffY = mouse.Y - win.AbsolutePosition.Y
+end)
+
+UserInputService.InputEnded:Connect(function(inp)
+    if inp.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
+end)
+
+-- mouse.Move — работает всегда, даже от первого лица
+mouse.Move:Connect(function()
+    if not dragging then return end
+    local vp = workspace.CurrentCamera.ViewportSize
+    local nx = math.clamp(mouse.X - dragOffX, 0, vp.X - win.AbsoluteSize.X)
+    local ny = math.clamp(mouse.Y - dragOffY, 0, vp.Y - win.AbsoluteSize.Y)
+    win.Position = UDim2.new(0, nx, 0, ny)
+end)
+
+-- ======= RShift =======
+UserInputService.InputBegan:Connect(function(inp, gp)
+    if gp then return end
+    if inp.KeyCode == Enum.KeyCode.RightShift then
+        local v = not win.Visible; win.Visible = v
+        UserInputService.MouseBehavior = v and Enum.MouseBehavior.Default or Enum.MouseBehavior.LockCenter
+    end
+end)
