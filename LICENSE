@@ -17,146 +17,125 @@ gui.Parent = player.PlayerGui
 
 local function co(p, r) Instance.new("UICorner", p).CornerRadius = UDim.new(0, r or 10) end
 local function st(p, c, t) local s = Instance.new("UIStroke", p); s.Color = c or Color3.fromRGB(25,25,40); s.Thickness = t or 1 end
-local function pad(p, l) local u = Instance.new("UIPadding", p); u.PaddingLeft = UDim.new(0, l or 12) end
+local function tween(obj, props, dur) TweenService:Create(obj, TweenInfo.new(dur or 0.18, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), props):Play() end
 
 -- Окно
 local win = Instance.new("Frame")
-win.Size = UDim2.new(0, 500, 0, 386)
-win.Position = UDim2.new(0.5, -250, 0.5, -193)
-win.BackgroundColor3 = Color3.fromRGB(21, 21, 31)
+win.Size = UDim2.new(0,500,0,386)
+win.Position = UDim2.new(0.5,-250,0.5,-193)
+win.BackgroundColor3 = Color3.fromRGB(21,21,31)
 win.BorderSizePixel = 0
 win.Visible = false
 win.ClipsDescendants = true
 win.Parent = gui
-co(win, 14)
-st(win, Color3.fromRGB(35, 35, 55))
+co(win,14); st(win, Color3.fromRGB(35,35,55))
 
 -- Titlebar
 local tb = Instance.new("Frame")
-tb.Size = UDim2.new(1, 0, 0, 46)
-tb.BackgroundColor3 = Color3.fromRGB(13, 13, 20)
-tb.BorderSizePixel = 0
-tb.ZIndex = 20
-tb.Parent = win
-co(tb, 14)
+tb.Size = UDim2.new(1,0,0,46)
+tb.BackgroundColor3 = Color3.fromRGB(13,13,20)
+tb.BorderSizePixel = 0; tb.ZIndex = 20; tb.Parent = win
+co(tb,14)
 local tbf = Instance.new("Frame")
-tbf.Size = UDim2.new(1, 0, 0.5, 0)
-tbf.Position = UDim2.new(0, 0, 0.5, 0)
-tbf.BackgroundColor3 = Color3.fromRGB(13, 13, 20)
-tbf.BorderSizePixel = 0
-tbf.Parent = tb
+tbf.Size = UDim2.new(1,0,0.5,0); tbf.Position = UDim2.new(0,0,0.5,0)
+tbf.BackgroundColor3 = Color3.fromRGB(13,13,20); tbf.BorderSizePixel = 0; tbf.Parent = tb
 
 local function dot(col, x)
     local d = Instance.new("Frame")
-    d.Size = UDim2.new(0, 11, 0, 11)
-    d.Position = UDim2.new(0, x, 0.5, -5.5)
-    d.BackgroundColor3 = col
-    d.BorderSizePixel = 0; d.ZIndex = 22
-    d.Parent = tb; co(d, 6)
+    d.Size = UDim2.new(0,11,0,11); d.Position = UDim2.new(0,x,0.5,-5.5)
+    d.BackgroundColor3 = col; d.BorderSizePixel = 0; d.ZIndex = 22; d.Parent = tb; co(d,6)
 end
 dot(Color3.fromRGB(255,95,87),  14)
 dot(Color3.fromRGB(254,188,46), 31)
 dot(Color3.fromRGB(40,200,64),  48)
 
-local function tbLabel(txt, col, x, w, bold)
+local function tbLbl(txt, col, x, w, bold)
     local l = Instance.new("TextLabel")
-    l.Size = UDim2.new(0, w, 1, 0)
-    l.Position = UDim2.new(0, x, 0, 0)
-    l.BackgroundTransparency = 1
-    l.Text = txt
-    l.TextColor3 = col
-    l.TextSize = 13
-    l.Font = bold and Enum.Font.GothamBold or Enum.Font.Gotham
-    l.TextXAlignment = Enum.TextXAlignment.Left
-    l.ZIndex = 22
-    l.Parent = tb
-    return l
+    l.Size = UDim2.new(0,w,1,0); l.Position = UDim2.new(0,x,0,0)
+    l.BackgroundTransparency = 1; l.Text = txt; l.TextColor3 = col
+    l.TextSize = 13; l.Font = bold and Enum.Font.GothamBold or Enum.Font.Gotham
+    l.TextXAlignment = Enum.TextXAlignment.Left; l.ZIndex = 22; l.Parent = tb
 end
-tbLabel("Hawixs", Color3.fromRGB(230,230,245), 70, 65, true)
-tbLabel("Script", Color3.fromRGB(139,92,246),  132, 55, true)
+tbLbl("Hawixs", Color3.fromRGB(230,230,245), 70,  65, true)
+tbLbl("Script", Color3.fromRGB(139,92,246),  132, 55, true)
 
 local ver = Instance.new("TextLabel")
-ver.Size = UDim2.new(0, 36, 0, 18); ver.Position = UDim2.new(0, 190, 0.5, -9)
+ver.Size = UDim2.new(0,36,0,18); ver.Position = UDim2.new(0,190,0.5,-9)
 ver.BackgroundColor3 = Color3.fromRGB(18,10,38); ver.TextColor3 = Color3.fromRGB(139,92,246)
 ver.Text = "v2.0"; ver.TextSize = 10; ver.Font = Enum.Font.GothamBold
 ver.BorderSizePixel = 0; ver.ZIndex = 22; ver.Parent = tb
-co(ver, 5); st(ver, Color3.fromRGB(55,25,110))
+co(ver,5); st(ver, Color3.fromRGB(55,25,110))
 
 local keyL = Instance.new("TextLabel")
-keyL.Size = UDim2.new(0, 56, 0, 20); keyL.Position = UDim2.new(1, -68, 0.5, -10)
+keyL.Size = UDim2.new(0,56,0,20); keyL.Position = UDim2.new(1,-68,0.5,-10)
 keyL.BackgroundColor3 = Color3.fromRGB(9,9,16); keyL.TextColor3 = Color3.fromRGB(50,50,72)
 keyL.Text = "RShift"; keyL.TextSize = 10; keyL.Font = Enum.Font.Gotham
 keyL.BorderSizePixel = 0; keyL.ZIndex = 22; keyL.Parent = tb
-co(keyL, 5); st(keyL, Color3.fromRGB(25,25,42))
+co(keyL,5); st(keyL, Color3.fromRGB(25,25,42))
 
 -- Sidebar
 local side = Instance.new("Frame")
-side.Size = UDim2.new(0, 130, 1, -46)
-side.Position = UDim2.new(0, 0, 0, 46)
-side.BackgroundColor3 = Color3.fromRGB(11, 11, 18)
-side.BorderSizePixel = 0
-side.Parent = win
+side.Size = UDim2.new(0,130,1,-46); side.Position = UDim2.new(0,0,0,46)
+side.BackgroundColor3 = Color3.fromRGB(11,11,18); side.BorderSizePixel = 0; side.Parent = win
 local sf = Instance.new("Frame")
-sf.Size = UDim2.new(0, 14, 1, 0); sf.Position = UDim2.new(1, -14, 0, 0)
+sf.Size = UDim2.new(0,14,1,0); sf.Position = UDim2.new(1,-14,0,0)
 sf.BackgroundColor3 = Color3.fromRGB(11,11,18); sf.BorderSizePixel = 0; sf.Parent = side
 st(side, Color3.fromRGB(22,22,36))
 
--- ScrollingFrame для контента
+-- ScrollingFrame
 local scroll = Instance.new("ScrollingFrame")
-scroll.Size = UDim2.new(1, -130, 1, -46)
-scroll.Position = UDim2.new(0, 130, 0, 46)
-scroll.BackgroundTransparency = 1
-scroll.BorderSizePixel = 0
+scroll.Size = UDim2.new(1,-130,1,-46); scroll.Position = UDim2.new(0,130,0,46)
+scroll.BackgroundTransparency = 1; scroll.BorderSizePixel = 0
 scroll.ScrollBarThickness = 3
 scroll.ScrollBarImageColor3 = Color3.fromRGB(60,60,90)
-scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+scroll.CanvasSize = UDim2.new(0,0,0,0)
 scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
 scroll.ScrollingDirection = Enum.ScrollingDirection.Y
 scroll.ElasticBehavior = Enum.ElasticBehavior.Always
 scroll.Parent = win
 
--- Контент внутри scroll
 local contentArea = Instance.new("Frame")
-contentArea.Size = UDim2.new(1, 0, 0, 0)
+contentArea.Size = UDim2.new(1,0,0,0)
 contentArea.AutomaticSize = Enum.AutomaticSize.Y
 contentArea.BackgroundTransparency = 1
 contentArea.Parent = scroll
-
 local UIList = Instance.new("UIListLayout", contentArea)
 UIList.SortOrder = Enum.SortOrder.LayoutOrder
-UIList.Padding = UDim.new(0, 0)
+UIList.Padding = UDim.new(0,0)
 
 -- State
 local S = {speed=16,jump=50,fly=false,noclip=false,infJump=false,god=false,invis=false}
 local acC = Color3.fromRGB(109,40,217)
 local acL = Color3.fromRGB(167,139,250)
-local panels = {}
+local panels  = {}
 local tabBtns = {}
 
-local function makePanel(name)
+local function makePanel()
     local p = Instance.new("Frame")
-    p.Name = name
-    p.Size = UDim2.new(1, 0, 0, 0)
-    p.AutomaticSize = Enum.AutomaticSize.Y
-    p.BackgroundTransparency = 1
-    p.Visible = false
-    p.LayoutOrder = 1
-    local list = Instance.new("UIListLayout", p)
-    list.SortOrder = Enum.SortOrder.LayoutOrder
-    list.Padding = UDim.new(0, 7)
-    local pd = Instance.new("UIPadding", p)
+    p.Size = UDim2.new(1,0,0,0); p.AutomaticSize = Enum.AutomaticSize.Y
+    p.BackgroundTransparency = 1; p.Visible = false; p.Parent = contentArea
+    local l = Instance.new("UIListLayout",p)
+    l.SortOrder = Enum.SortOrder.LayoutOrder; l.Padding = UDim.new(0,7)
+    local pd = Instance.new("UIPadding",p)
     pd.PaddingLeft = UDim.new(0,14); pd.PaddingRight = UDim.new(0,14)
     pd.PaddingTop = UDim.new(0,14);  pd.PaddingBottom = UDim.new(0,14)
-    p.Parent = contentArea
     return p
 end
 
 local function switchTab(name)
     scroll.CanvasPosition = Vector2.zero
-    for n, p in pairs(panels)  do p.Visible = (n == name) end
-    for n, d in pairs(tabBtns) do
-        local on = (n == name)
-        d.btn.TextColor3 = on and acL or Color3.fromRGB(58,58,82)
+    for n,p in pairs(panels) do
+        if n == name then
+            p.Visible = true
+            p.Position = UDim2.new(0,0,0,10)
+            tween(p, {Position = UDim2.new(0,0,0,0)}, 0.2)
+        else
+            p.Visible = false
+        end
+    end
+    for n,d in pairs(tabBtns) do
+        local on = (n==name)
+        tween(d.btn, {TextColor3 = on and acL or Color3.fromRGB(58,58,82)}, 0.15)
         d.btn.BackgroundTransparency = on and 0 or 1
         d.btn.BackgroundColor3 = Color3.fromRGB(22,22,38)
         d.bar.Visible = on
@@ -165,70 +144,59 @@ end
 
 local function makeTabBtn(label, yPos)
     local btn = Instance.new("TextButton")
-    btn.Size = UDim2.new(1, -4, 0, 36)
-    btn.Position = UDim2.new(0, 0, 0, yPos)
-    btn.BackgroundTransparency = 1
-    btn.Text = "       "..label
-    btn.TextColor3 = Color3.fromRGB(58,58,82)
-    btn.TextSize = 12; btn.Font = Enum.Font.Gotham
-    btn.TextXAlignment = Enum.TextXAlignment.Left
-    btn.BorderSizePixel = 0; btn.Parent = side
-    co(btn, 7)
+    btn.Size = UDim2.new(1,-4,0,36); btn.Position = UDim2.new(0,0,0,yPos)
+    btn.BackgroundTransparency = 1; btn.Text = "       "..label
+    btn.TextColor3 = Color3.fromRGB(58,58,82); btn.TextSize = 12
+    btn.Font = Enum.Font.Gotham; btn.TextXAlignment = Enum.TextXAlignment.Left
+    btn.BorderSizePixel = 0; btn.Parent = side; co(btn,7)
+    btn.MouseEnter:Connect(function()
+        if btn.TextColor3 ~= acL then tween(btn,{TextColor3=Color3.fromRGB(130,130,160)},0.12) end
+    end)
+    btn.MouseLeave:Connect(function()
+        if btn.TextColor3 ~= acL then tween(btn,{TextColor3=Color3.fromRGB(58,58,82)},0.12) end
+    end)
     local bar = Instance.new("Frame")
-    bar.Size = UDim2.new(0, 3, 0.55, 0)
-    bar.Position = UDim2.new(0, 0, 0.225, 0)
-    bar.BackgroundColor3 = acC; bar.BorderSizePixel = 0
-    bar.Visible = false; bar.Parent = btn; co(bar, 2)
+    bar.Size = UDim2.new(0,3,0.55,0); bar.Position = UDim2.new(0,0,0.225,0)
+    bar.BackgroundColor3 = acC; bar.BorderSizePixel = 0; bar.Visible = false; bar.Parent = btn; co(bar,2)
     return btn, bar
 end
 
--- Card
 local function card(parent, h)
     local f = Instance.new("Frame")
-    f.Size = UDim2.new(1, 0, 0, h or 38)
-    f.BackgroundColor3 = Color3.fromRGB(13,13,20)
-    f.BorderSizePixel = 0; f.Parent = parent
-    co(f, 9); st(f, Color3.fromRGB(22,22,36))
+    f.Size = UDim2.new(1,0,0,h or 38); f.BackgroundColor3 = Color3.fromRGB(13,13,20)
+    f.BorderSizePixel = 0; f.Parent = parent; co(f,9); st(f, Color3.fromRGB(22,22,36))
+    f.MouseEnter:Connect(function() tween(f,{BackgroundColor3=Color3.fromRGB(17,17,27)},0.15) end)
+    f.MouseLeave:Connect(function() tween(f,{BackgroundColor3=Color3.fromRGB(13,13,20)},0.15) end)
     return f
 end
 
 local function secLabel(parent, txt)
     local l = Instance.new("TextLabel")
-    l.Size = UDim2.new(1, 0, 0, 22)
-    l.BackgroundTransparency = 1
-    l.Text = txt; l.TextColor3 = Color3.fromRGB(45,45,68)
-    l.TextSize = 10; l.Font = Enum.Font.GothamBold
-    l.TextXAlignment = Enum.TextXAlignment.Left
-    l.Parent = parent
-    return l
+    l.Size = UDim2.new(1,0,0,22); l.BackgroundTransparency = 1; l.Text = txt
+    l.TextColor3 = Color3.fromRGB(45,45,68); l.TextSize = 10; l.Font = Enum.Font.GothamBold
+    l.TextXAlignment = Enum.TextXAlignment.Left; l.Parent = parent
 end
 
 local function makeToggle(parent, label, default, onChange)
     local c = card(parent, 38)
     local lbl = Instance.new("TextLabel")
-    lbl.Size = UDim2.new(1, -54, 1, 0); lbl.Position = UDim2.new(0, 12, 0, 0)
+    lbl.Size = UDim2.new(1,-54,1,0); lbl.Position = UDim2.new(0,12,0,0)
     lbl.BackgroundTransparency = 1; lbl.Text = label
     lbl.TextColor3 = Color3.fromRGB(185,185,205); lbl.TextSize = 12
-    lbl.Font = Enum.Font.Gotham; lbl.TextXAlignment = Enum.TextXAlignment.Left
-    lbl.Parent = c
-
+    lbl.Font = Enum.Font.Gotham; lbl.TextXAlignment = Enum.TextXAlignment.Left; lbl.Parent = c
     local isOn = default
     local tog = Instance.new("TextButton")
-    tog.Size = UDim2.new(0, 38, 0, 20); tog.Position = UDim2.new(1, -50, 0.5, -10)
+    tog.Size = UDim2.new(0,38,0,20); tog.Position = UDim2.new(1,-50,0.5,-10)
     tog.BackgroundColor3 = isOn and acC or Color3.fromRGB(28,28,44)
-    tog.Text = ""; tog.BorderSizePixel = 0; tog.Parent = c; co(tog, 10)
-    st(tog, isOn and Color3.fromRGB(90,30,180) or Color3.fromRGB(35,35,58))
-
+    tog.Text = ""; tog.BorderSizePixel = 0; tog.Parent = c; co(tog,10)
     local knob = Instance.new("Frame")
-    knob.Size = UDim2.new(0, 14, 0, 14)
+    knob.Size = UDim2.new(0,14,0,14)
     knob.Position = isOn and UDim2.new(0,22,0.5,-7) or UDim2.new(0,3,0.5,-7)
-    knob.BackgroundColor3 = Color3.new(1,1,1); knob.BorderSizePixel = 0
-    knob.Parent = tog; co(knob, 7)
-
+    knob.BackgroundColor3 = Color3.new(1,1,1); knob.BorderSizePixel = 0; knob.Parent = tog; co(knob,7)
     tog.MouseButton1Click:Connect(function()
         isOn = not isOn
-        TweenService:Create(tog,  TweenInfo.new(0.14), {BackgroundColor3 = isOn and acC or Color3.fromRGB(28,28,44)}):Play()
-        TweenService:Create(knob, TweenInfo.new(0.14), {Position = isOn and UDim2.new(0,22,0.5,-7) or UDim2.new(0,3,0.5,-7)}):Play()
+        tween(tog,  {BackgroundColor3 = isOn and acC or Color3.fromRGB(28,28,44)}, 0.15)
+        tween(knob, {Position = isOn and UDim2.new(0,22,0.5,-7) or UDim2.new(0,3,0.5,-7)}, 0.15)
         if onChange then onChange(isOn) end
     end)
     return function() return isOn end
@@ -237,169 +205,232 @@ end
 local function makeSlider(parent, label, mn, mx, def, onChange)
     local c = card(parent, 56)
     local lbl = Instance.new("TextLabel")
-    lbl.Size = UDim2.new(1, -60, 0, 22); lbl.Position = UDim2.new(0, 12, 0, 6)
+    lbl.Size = UDim2.new(1,-60,0,22); lbl.Position = UDim2.new(0,12,0,6)
     lbl.BackgroundTransparency = 1; lbl.Text = label
     lbl.TextColor3 = Color3.fromRGB(185,185,205); lbl.TextSize = 12
     lbl.Font = Enum.Font.Gotham; lbl.TextXAlignment = Enum.TextXAlignment.Left; lbl.Parent = c
-
     local vBox = Instance.new("TextLabel")
-    vBox.Size = UDim2.new(0, 40, 0, 18); vBox.Position = UDim2.new(1, -52, 0, 8)
+    vBox.Size = UDim2.new(0,40,0,18); vBox.Position = UDim2.new(1,-52,0,8)
     vBox.BackgroundColor3 = Color3.fromRGB(18,9,36); vBox.TextColor3 = acL
     vBox.Text = tostring(def); vBox.TextSize = 11; vBox.Font = Enum.Font.GothamBold
-    vBox.BorderSizePixel = 0; vBox.Parent = c; co(vBox, 5)
-    st(vBox, Color3.fromRGB(45,18,90))
-
+    vBox.BorderSizePixel = 0; vBox.Parent = c; co(vBox,5)
     local track = Instance.new("Frame")
-    track.Size = UDim2.new(1, -24, 0, 4); track.Position = UDim2.new(0, 12, 0, 40)
-    track.BackgroundColor3 = Color3.fromRGB(24,24,40); track.BorderSizePixel = 0
-    track.Parent = c; co(track, 2)
-
+    track.Size = UDim2.new(1,-24,0,4); track.Position = UDim2.new(0,12,0,40)
+    track.BackgroundColor3 = Color3.fromRGB(24,24,40); track.BorderSizePixel = 0; track.Parent = c; co(track,2)
     local fill = Instance.new("Frame")
-    fill.Size = UDim2.new((def-mn)/(mx-mn), 0, 1, 0)
-    fill.BackgroundColor3 = acC; fill.BorderSizePixel = 0; fill.Parent = track; co(fill, 2)
-
+    fill.Size = UDim2.new((def-mn)/(mx-mn),0,1,0)
+    fill.BackgroundColor3 = acC; fill.BorderSizePixel = 0; fill.Parent = track; co(fill,2)
     local thumb = Instance.new("Frame")
-    thumb.Size = UDim2.new(0, 15, 0, 15); thumb.AnchorPoint = Vector2.new(0.5, 0.5)
-    thumb.Position = UDim2.new((def-mn)/(mx-mn), 0, 0.5, 0)
+    thumb.Size = UDim2.new(0,15,0,15); thumb.AnchorPoint = Vector2.new(0.5,0.5)
+    thumb.Position = UDim2.new((def-mn)/(mx-mn),0,0.5,0)
     thumb.BackgroundColor3 = Color3.fromRGB(196,181,253); thumb.BorderSizePixel = 0
-    thumb.ZIndex = 5; thumb.Parent = track; co(thumb, 8)
-    st(thumb, Color3.fromRGB(109,40,217), 2)
-
+    thumb.ZIndex = 5; thumb.Parent = track; co(thumb,8); st(thumb, Color3.fromRGB(109,40,217),2)
     local val = def; local drag = false
-    track.InputBegan:Connect(function(i) if i.UserInputType == Enum.UserInputType.MouseButton1 then drag = true end end)
-    UserInputService.InputEnded:Connect(function(i) if i.UserInputType == Enum.UserInputType.MouseButton1 then drag = false end end)
+    track.InputBegan:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 then
+            drag = true; tween(thumb,{Size=UDim2.new(0,18,0,18)},0.12)
+        end
+    end)
+    UserInputService.InputEnded:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 then
+            drag = false; tween(thumb,{Size=UDim2.new(0,15,0,15)},0.12)
+        end
+    end)
     RunService.Heartbeat:Connect(function()
         if not drag then return end
-        local pct = math.clamp((mouse.X - track.AbsolutePosition.X) / track.AbsoluteSize.X, 0, 1)
-        val = math.round(mn + pct*(mx-mn))
-        fill.Size = UDim2.new(pct, 0, 1, 0); thumb.Position = UDim2.new(pct, 0, 0.5, 0)
+        local pct = math.clamp((mouse.X-track.AbsolutePosition.X)/track.AbsoluteSize.X,0,1)
+        val = math.round(mn+pct*(mx-mn))
+        fill.Size = UDim2.new(pct,0,1,0); thumb.Position = UDim2.new(pct,0,0.5,0)
         vBox.Text = tostring(val)
         if onChange then onChange(val) end
     end)
-    return function() return val end
 end
 
 local function ndiv(yPos)
-    local d = Instance.new("Frame"); d.Size = UDim2.new(1, -18, 0, 1)
-    d.Position = UDim2.new(0, 9, 0, yPos); d.BackgroundColor3 = Color3.fromRGB(18,18,30)
+    local d = Instance.new("Frame"); d.Size = UDim2.new(1,-18,0,1)
+    d.Position = UDim2.new(0,9,0,yPos); d.BackgroundColor3 = Color3.fromRGB(18,18,30)
     d.BorderSizePixel = 0; d.Parent = side
 end
 
--- ======= Movement =======
+-- ====== Movement ======
 local mvBtn, mvBar = makeTabBtn("Movement", 8)
-local mvPanel = makePanel("Movement")
-panels["Movement"] = mvPanel; tabBtns["Movement"] = {btn=mvBtn, bar=mvBar}
-
-secLabel(mvPanel, "ДВИЖЕНИЕ")
-makeSlider(mvPanel, "Скорость",  16, 150, 16,  function(v) S.speed = v end)
-makeSlider(mvPanel, "Прыжок",   50, 350, 50,  function(v) S.jump  = v end)
-makeToggle(mvPanel, "Полёт",               false, function(v) S.fly     = v end)
-makeToggle(mvPanel, "Ускорение",           true,  function(v) end)
-makeToggle(mvPanel, "Бесконечный прыжок",  false, function(v) S.infJump = v end)
-makeToggle(mvPanel, "Нет коллизий",        false, function(v) S.noclip  = v end)
-makeToggle(mvPanel, "Телепорт к точке",    false, function(v) end)
+local mvPanel = makePanel()
+panels["Movement"] = mvPanel; tabBtns["Movement"] = {btn=mvBtn,bar=mvBar}
+secLabel(mvPanel,"ДВИЖЕНИЕ")
+makeSlider(mvPanel,"Скорость",16,150,16,function(v) S.speed=v end)
+makeSlider(mvPanel,"Прыжок",50,350,50,function(v) S.jump=v end)
+makeToggle(mvPanel,"Полёт",false,function(v) S.fly=v end)
+makeToggle(mvPanel,"Ускорение",true,function(v) end)
+makeToggle(mvPanel,"Бесконечный прыжок",false,function(v) S.infJump=v end)
+makeToggle(mvPanel,"Нет коллизий",false,function(v) S.noclip=v end)
 mvBtn.MouseButton1Click:Connect(function() switchTab("Movement") end)
 
--- ======= Player =======
+-- ====== Player ======
 local plBtn, plBar = makeTabBtn("Player", 52)
-local plPanel = makePanel("Player")
-panels["Player"] = plPanel; tabBtns["Player"] = {btn=plBtn, bar=plBar}
+local plPanel = makePanel()
+panels["Player"] = plPanel; tabBtns["Player"] = {btn=plBtn,bar=plBar}
 ndiv(95)
-
-secLabel(plPanel, "ИГРОК")
-makeToggle(plPanel, "Бог мод",    false, function(v)
-    S.god = v; local c = player.Character
-    local h = c and c:FindFirstChildOfClass("Humanoid")
-    if h then h.MaxHealth = v and math.huge or 100; h.Health = h.MaxHealth end
+secLabel(plPanel,"ИГРОК")
+makeToggle(plPanel,"Бог мод",false,function(v)
+    local c=player.Character; local h=c and c:FindFirstChildOfClass("Humanoid")
+    if h then h.MaxHealth=v and math.huge or 100; h.Health=h.MaxHealth end
 end)
-makeToggle(plPanel, "Невидимость", false, function(v)
-    S.invis = v; local c = player.Character
-    if c then for _, p in ipairs(c:GetDescendants()) do
-        if p:IsA("BasePart") and p.Name ~= "HumanoidRootPart" then
-            p.LocalTransparencyModifier = v and 1 or 0 end end end
+makeToggle(plPanel,"Невидимость",false,function(v)
+    local c=player.Character
+    if c then for _,p in ipairs(c:GetDescendants()) do
+        if p:IsA("BasePart") and p.Name~="HumanoidRootPart" then p.LocalTransparencyModifier=v and 1 or 0 end end end
 end)
-makeSlider(plPanel, "Здоровье", 0, 100, 100, function(v)
-    local c = player.Character; local h = c and c:FindFirstChildOfClass("Humanoid")
-    if h then h.Health = v end
+makeSlider(plPanel,"Здоровье",0,100,100,function(v)
+    local c=player.Character; local h=c and c:FindFirstChildOfClass("Humanoid")
+    if h then h.Health=v end
 end)
-makeToggle(plPanel, "Урон x2",  false, function(v) end)
+makeToggle(plPanel,"Урон x2",false,function(v) end)
 plBtn.MouseButton1Click:Connect(function() switchTab("Player") end)
 
--- ======= Settings =======
-local stBtn, stBar = makeTabBtn("Settings", 104)
-local stPanel = makePanel("Settings")
-panels["Settings"] = stPanel; tabBtns["Settings"] = {btn=stBtn, bar=stBar}
+-- ====== ESP ======
+local espBtn, espBar = makeTabBtn("ESP", 96)
+local espPanel = makePanel()
+panels["ESP"] = espPanel; tabBtns["ESP"] = {btn=espBtn,bar=espBar}
+ndiv(139)
 
-secLabel(stPanel, "НАСТРОЙКИ")
-makeToggle(stPanel, "Уведомления",       true,  function(v) end)
-makeToggle(stPanel, "Показывать статус", true,  function(v) end)
-makeSlider(stPanel, "Прозрачность окна", 0, 100, 100, function(v)
+local espData = {}
+local espEnabled, espNames, espHealth = false, false, false
+local espColor = Color3.fromRGB(167,139,250)
+
+local function clearESP()
+    for _,d in pairs(espData) do
+        if d.hl  then d.hl:Destroy()  end
+        if d.bb  then d.bb:Destroy()  end
+    end
+    espData = {}
+end
+
+local function buildESP()
+    clearESP()
+    if not espEnabled then return end
+    for _,p in ipairs(Players:GetPlayers()) do
+        if p ~= player and p.Character then
+            local char = p.Character
+            local hl = Instance.new("Highlight")
+            hl.FillColor = espColor
+            hl.OutlineColor = espColor
+            hl.FillTransparency = 0.6
+            hl.OutlineTransparency = 0
+            hl.Adornee = char
+            hl.Parent = char
+            local bb = nil
+            if espNames then
+                local root = char:FindFirstChild("HumanoidRootPart")
+                if root then
+                    bb = Instance.new("BillboardGui")
+                    bb.Size = UDim2.new(0,120,0,28)
+                    bb.StudsOffset = Vector3.new(0,3.5,0)
+                    bb.AlwaysOnTop = true
+                    bb.Parent = root
+                    local lbl = Instance.new("TextLabel",bb)
+                    lbl.Size = UDim2.new(1,0,1,0)
+                    lbl.BackgroundTransparency = 1
+                    lbl.Text = p.Name
+                    lbl.TextColor3 = espColor
+                    lbl.TextSize = 13
+                    lbl.Font = Enum.Font.GothamBold
+                end
+            end
+            espData[p.UserId] = {hl=hl, bb=bb}
+        end
+    end
+end
+
+secLabel(espPanel,"ПОДСВЕТКА")
+makeToggle(espPanel,"ESP игроков",false,function(v) espEnabled=v; buildESP() end)
+makeToggle(espPanel,"Имена над головой",false,function(v) espNames=v; buildESP() end)
+makeToggle(espPanel,"Здоровье ESP",false,function(v) espHealth=v end)
+makeSlider(espPanel,"Макс. дистанция",100,1000,500,function(v) end)
+
+espBtn.MouseButton1Click:Connect(function() switchTab("ESP") end)
+
+Players.PlayerRemoving:Connect(function(p)
+    if espData[p.UserId] then
+        if espData[p.UserId].hl then espData[p.UserId].hl:Destroy() end
+        if espData[p.UserId].bb then espData[p.UserId].bb:Destroy() end
+        espData[p.UserId] = nil
+    end
+end)
+
+-- ====== Settings ======
+local stBtn, stBar = makeTabBtn("Settings", 148)
+local stPanel = makePanel()
+panels["Settings"] = stPanel; tabBtns["Settings"] = {btn=stBtn,bar=stBar}
+
+secLabel(stPanel,"НАСТРОЙКИ")
+makeToggle(stPanel,"Уведомления",true,function(v) end)
+makeToggle(stPanel,"Показывать статус",true,function(v) end)
+makeSlider(stPanel,"Прозрачность окна",0,100,100,function(v)
     win.BackgroundTransparency = v/100
 end)
 stBtn.MouseButton1Click:Connect(function() switchTab("Settings") end)
 
 switchTab("Movement")
 
--- ======= Логика =======
+-- ====== Логика ======
 local flyBV = nil
 RunService.Heartbeat:Connect(function()
-    local char = player.Character; if not char then return end
-    local hum  = char:FindFirstChildOfClass("Humanoid")
-    local root = char:FindFirstChild("HumanoidRootPart")
-    if hum then hum.WalkSpeed = S.speed; hum.JumpPower = S.jump end
-    if S.noclip then for _, p in ipairs(char:GetDescendants()) do
-        if p:IsA("BasePart") then p.CanCollide = false end end end
+    local char=player.Character; if not char then return end
+    local hum=char:FindFirstChildOfClass("Humanoid")
+    local root=char:FindFirstChild("HumanoidRootPart")
+    if hum then hum.WalkSpeed=S.speed; hum.JumpPower=S.jump end
+    if S.noclip then
+        for _,p in ipairs(char:GetDescendants()) do
+            if p:IsA("BasePart") then p.CanCollide=false end
+        end
+    end
     if S.fly and root then
         if not flyBV then
             flyBV = Instance.new("BodyVelocity")
-            flyBV.MaxForce = Vector3.new(1e5,1e5,1e5); flyBV.Velocity = Vector3.zero; flyBV.Parent = root
+            flyBV.MaxForce = Vector3.new(1e5,1e5,1e5)
+            flyBV.Velocity = Vector3.zero; flyBV.Parent = root
         end
-        local cam = workspace.CurrentCamera; local dir = Vector3.zero
-        if UserInputService:IsKeyDown(Enum.KeyCode.W) then dir += cam.CFrame.LookVector  end
-        if UserInputService:IsKeyDown(Enum.KeyCode.S) then dir -= cam.CFrame.LookVector  end
-        if UserInputService:IsKeyDown(Enum.KeyCode.A) then dir -= cam.CFrame.RightVector end
-        if UserInputService:IsKeyDown(Enum.KeyCode.D) then dir += cam.CFrame.RightVector end
-        if UserInputService:IsKeyDown(Enum.KeyCode.Space)       then dir += Vector3.new(0,1,0) end
-        if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then dir -= Vector3.new(0,1,0) end
-        flyBV.Velocity = dir.Magnitude > 0 and dir.Unit*50 or Vector3.zero
-    elseif flyBV then flyBV:Destroy(); flyBV = nil end
+        local cam=workspace.CurrentCamera; local dir=Vector3.zero
+        if UserInputService:IsKeyDown(Enum.KeyCode.W) then dir+=cam.CFrame.LookVector  end
+        if UserInputService:IsKeyDown(Enum.KeyCode.S) then dir-=cam.CFrame.LookVector  end
+        if UserInputService:IsKeyDown(Enum.KeyCode.A) then dir-=cam.CFrame.RightVector end
+        if UserInputService:IsKeyDown(Enum.KeyCode.D) then dir+=cam.CFrame.RightVector end
+        if UserInputService:IsKeyDown(Enum.KeyCode.Space)       then dir+=Vector3.new(0,1,0) end
+        if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then dir-=Vector3.new(0,1,0) end
+        flyBV.Velocity = dir.Magnitude>0 and dir.Unit*50 or Vector3.zero
+    elseif flyBV then
+        flyBV:Destroy(); flyBV=nil
+    end
 end)
 
 UserInputService.JumpRequest:Connect(function()
     if not S.infJump then return end
-    local c = player.Character; local h = c and c:FindFirstChildOfClass("Humanoid")
+    local c=player.Character; local h=c and c:FindFirstChildOfClass("Humanoid")
     if h then h:ChangeState(Enum.HumanoidStateType.Jumping) end
 end)
 
--- ======= ПЕРЕТАСКИВАНИЕ через mouse.Move =======
-local dragging = false
-local dragOffX, dragOffY = 0, 0
+-- ====== Открытие/закрытие с анимацией ======
+local menuOpen = false
 
-tb.InputBegan:Connect(function(inp)
-    if inp.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
-    dragging = true
-    dragOffX = mouse.X - win.AbsolutePosition.X
-    dragOffY = mouse.Y - win.AbsolutePosition.Y
-end)
+local function openMenu()
+    menuOpen = true
+    win.Visible = true
+    win.Size = UDim2.new(0,500,0,0)
+    win.BackgroundTransparency = 1
+    tween(win,{Size=UDim2.new(0,500,0,386), BackgroundTransparency=0}, 0.28)
+end
 
-UserInputService.InputEnded:Connect(function(inp)
-    if inp.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
-end)
+local function closeMenu()
+    menuOpen = false
+    tween(win,{Size=UDim2.new(0,500,0,0), BackgroundTransparency=1}, 0.2)
+    task.delay(0.21, function()
+        if not menuOpen then win.Visible=false end
+    end)
+end
 
--- mouse.Move — работает всегда, даже от первого лица
-mouse.Move:Connect(function()
-    if not dragging then return end
-    local vp = workspace.CurrentCamera.ViewportSize
-    local nx = math.clamp(mouse.X - dragOffX, 0, vp.X - win.AbsoluteSize.X)
-    local ny = math.clamp(mouse.Y - dragOffY, 0, vp.Y - win.AbsoluteSize.Y)
-    win.Position = UDim2.new(0, nx, 0, ny)
-end)
-
--- ======= RShift =======
 UserInputService.InputBegan:Connect(function(inp, gp)
     if gp then return end
     if inp.KeyCode == Enum.KeyCode.RightShift then
-        local v = not win.Visible; win.Visible = v
-        UserInputService.MouseBehavior = v and Enum.MouseBehavior.Default or Enum.MouseBehavior.LockCenter
+        if menuOpen then closeMenu() else openMenu() end
     end
 end)
